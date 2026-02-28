@@ -21,6 +21,9 @@ export const metadata: Metadata = {
     template: `%s | ${BRAND.name}`,
   },
   description: BRAND.tagline,
+  icons: {
+    icon: "/favicon.ico",
+  },
   openGraph: {
     title: `${BRAND.name} - AI Agent Token Launchpad`,
     description: BRAND.tagline,
@@ -30,7 +33,7 @@ export const metadata: Metadata = {
     type: "website",
   },
   twitter: {
-    card: "summary_large_image",
+    card: "summary",
     title: `${BRAND.name} - AI Agent Token Launchpad`,
     description: BRAND.tagline,
     creator: BRAND.twitter,
