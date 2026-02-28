@@ -48,10 +48,20 @@ export default function LeaderboardPage() {
           <Link href="/" className="text-2xl font-bold text-cyan-400">
             {BRAND.name}
           </Link>
-          <nav className="flex gap-6">
-            <Link href="/docs" className="hover:text-cyan-400">Docs</Link>
-            <Link href="/skills" className="hover:text-cyan-400">For Agents</Link>
-          </nav>
+          <div className="flex items-center gap-6">
+            <nav className="flex gap-6">
+              <Link href="/docs" className="hover:text-cyan-400">Docs</Link>
+              <Link href="/skills" className="hover:text-cyan-400">For Agents</Link>
+            </nav>
+            <a 
+              href={BRAND.twitterUrl} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-slate-400 hover:text-cyan-400"
+            >
+              {BRAND.twitter}
+            </a>
+          </div>
         </div>
       </header>
 

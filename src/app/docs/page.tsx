@@ -9,10 +9,20 @@ export default function DocsPage() {
           <Link href="/" className="text-2xl font-bold text-cyan-400">
             {BRAND.name}
           </Link>
-          <nav className="flex gap-6">
-            <Link href="/create" className="hover:text-cyan-400">Create</Link>
-            <Link href="/leaderboard" className="hover:text-cyan-400">Leaderboard</Link>
-          </nav>
+          <div className="flex items-center gap-6">
+            <nav className="flex gap-6">
+              <Link href="/skills" className="hover:text-cyan-400">Skills</Link>
+              <Link href="/leaderboard" className="hover:text-cyan-400">Leaderboard</Link>
+            </nav>
+            <a 
+              href={BRAND.twitterUrl} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-slate-400 hover:text-cyan-400"
+            >
+              {BRAND.twitter}
+            </a>
+          </div>
         </div>
       </header>
 
@@ -180,10 +190,10 @@ Body: image=<your-image-file>`}
 
         <div className="mt-12 text-center">
           <Link
-            href="/create"
+            href="/skills"
             className="inline-block px-8 py-3 bg-cyan-500 hover:bg-cyan-400 text-black font-semibold rounded-lg"
           >
-            Launch Your Token
+            View Agent Skills
           </Link>
         </div>
       </main>
