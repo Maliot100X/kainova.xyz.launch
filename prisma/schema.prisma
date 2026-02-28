@@ -1,0 +1,132 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Agent {
+  id            String    @id @default(cuid())
+  agentId       String    @unique @map("agent_id")
+  agentName     String    @map("agent_name")
+  walletAddress String    @map("wallet_address")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+
+  tokens   Token[]
+  earnings Earning[]
+
+  @@map("agents")
+}
+
+model Token {
+  id              String   @id @default(cuid())
+  mintAddress     String   @unique @map("mint_address")
+  name            String
+  symbol          String
+  description     String
+  imageUrl        String   @map("image_url")
+  agentId         String   @map("agent_id")
+  walletAddress   String   @map("wallet_address")
+  launchFeePaid   Boolean  @default(false) @map("launch_fee_paid")
+  launchFeeTxHash String?  @map("launch_fee_tx_hash")
+  pumpUrl         String?  @map("pump_url")
+  txHash          String   @map("tx_hash")
+  verified        Boolean  @default(false)
+  verifyTxHash    String?  @map("verify_tx_hash")
+  website         String?
+  twitter         String?
+  telegram        String?
+  fundingSource   String   @default("standard") @map("funding_source")
+  devBuySol       Float?   @map("dev_buy_sol")
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  agent    Agent     @relation(fields: [agentId], references: [agentId])
+  earnings Earning[]
+
+  @@index([agentId])
+  @@index([mintAddress])
+  @@index([createdAt])
+  @@map("tokens")
+}
+
+model Earning {
+  id            String    @id @default(cuid())
+  agentId       String    @map("agent_id")
+  mintAddress   String    @map("mint_address")
+  amount        Float
+  status        String    @default("pending")
+  txHash        String?   @map("tx_hash")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  distributedAt DateTime? @map("distributed_at")
+
+  agent Agent @relation(fields: [agentId], references: [agentId])
+  token Token @relation(fields: [mintAddress], references: [mintAddress])
+
+  @@index([agentId])
+  @@index([mintAddress])
+  @@index([status])
+  @@map("earnings")
+}
+
+model LaunchFee {
+  id          String    @id @default(cuid())
+  agentId     String    @map("agent_id")
+  amount      Float     @default(0.035)
+  txHash      String    @unique @map("tx_hash")
+  status      String    @default("pending")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  confirmedAt DateTime? @map("confirmed_at")
+
+  @@index([agentId])
+  @@map("launch_fees")
+}
+
+model Upload {
+  id        String   @id @default(cuid())
+  filename  String
+  url       String
+  size      Int
+  mimeType  String   @map("mime_type")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([createdAt])
+  @@map("uploads")
+}
+
+model SniperSubscription {
+  id                String   @id @default(cuid())
+  subscriberId      String   @unique @map("subscriber_id")
+  apiKey            String   @unique @map("api_key")
+  webhookUrl        String   @map("webhook_url")
+  walletAddress     String   @map("wallet_address")
+  balanceSol        Float    @default(0) @map("balance_sol")
+  isActive          Boolean  @default(false) @map("is_active")
+  notificationsSent Int      @default(0) @map("notifications_sent")
+  totalDeposited    Float    @default(0) @map("total_deposited")
+  totalCharged      Float    @default(0) @map("total_charged")
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  notifications SniperNotification[]
+
+  @@map("sniper_subscriptions")
+}
+
+model SniperNotification {
+  id             String   @id @default(cuid())
+  subscriberId   String   @map("subscriber_id")
+  mintAddress    String   @map("mint_address")
+  payload        String
+  delivered      Boolean  @default(false)
+  chargeAmount   Float    @default(0.001) @map("charge_amount")
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  subscription SniperSubscription @relation(fields: [subscriberId], references: [subscriberId])
+
+  @@index([subscriberId])
+  @@map("sniper_notifications")
+}
