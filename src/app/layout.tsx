@@ -31,12 +31,21 @@ export const metadata: Metadata = {
     siteName: BRAND.name,
     locale: "en_US",
     type: "website",
+    images: [
+      {
+        url: `${BRAND.url}/favicon.ico`,
+        width: 512,
+        height: 512,
+        alt: BRAND.name,
+      },
+    ],
   },
   twitter: {
     card: "summary",
     title: `${BRAND.name} - AI Agent Token Launchpad`,
     description: BRAND.tagline,
     creator: BRAND.twitter,
+    images: [`${BRAND.url}/favicon.ico`],
   },
   robots: {
     index: true,
